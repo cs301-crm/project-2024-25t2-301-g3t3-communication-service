@@ -15,22 +15,39 @@ public class EmailService {
     private String senderEmail;
 
     public EmailService(@Value("${aws.region}") String region) {
+        // System.out.println(region);
+        // System.out.println(Region.of(region));
         this.sesClient = SesClient.builder()
                 .region(Region.of(region))
                 .build();
     }
 
-    public void sendEmail(String recipient, String subject, String body, String crudType) {
+    public void sendEmail(String recipient, String subject, String messageBody) {
+        // System.out.println(recipient);
+        // System.out.println(subject);
+        // System.out.println(messageBody);
+        // System.out.println(senderEmail);
+        // System.out.println();
+        // Build email request
         SendEmailRequest emailRequest = SendEmailRequest.builder()
                 .destination(Destination.builder().toAddresses(recipient).build())
                 .message(Message.builder()
                         .subject(Content.builder().data(subject).build())
-                        .body(Body.builder().text(Content.builder().data(body).build()).build())
+                        .body(Body.builder().text(Content.builder().data(messageBody).build()).build())
                         .build())
                 .source(senderEmail)
                 .build();
 
-        sesClient.sendEmail(emailRequest);
+        //sesClient.sendEmail(emailRequest);
+        try {
+            System.out.println("Attempting to send an email through Amazon SES " + "using the AWS SDK for Java...");
+            sesClient.sendEmail(emailRequest);
+
+        } catch (SesException e) {
+            System.out.println("error sending email...");
+            System.err.println(e.awsErrorDetails().errorMessage());
+            //System.exit(1);
+        }
     }
 }
 

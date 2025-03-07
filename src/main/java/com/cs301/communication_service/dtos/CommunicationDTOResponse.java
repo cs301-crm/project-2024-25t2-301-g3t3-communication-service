@@ -1,6 +1,7 @@
 package com.cs301.communication_service.dtos;
 
 //import java.time.LocalDateTime;
+import java.util.*;
 
 import com.cs301.communication_service.constants.*;
 
@@ -15,7 +16,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommunicationDTO {
+public class CommunicationDTOResponse {
+
+    @NotNull
+    private UUID communicationId;
 
     @NotBlank
     private String agentId;
@@ -40,6 +44,6 @@ public class CommunicationDTO {
     @NotNull
     private CommunicationStatus status;
 
-    // @NotNull
-    // private String timestamp;
+    @NotNull
+    private String timestamp;
 }

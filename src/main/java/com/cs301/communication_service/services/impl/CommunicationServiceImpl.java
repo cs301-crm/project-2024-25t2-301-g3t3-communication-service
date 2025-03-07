@@ -4,8 +4,10 @@ import com.cs301.communication_service.services.CommunicationService;
 import com.cs301.communication_service.constants.CommunicationStatus;
 import com.cs301.communication_service.models.Communication;
 import com.cs301.communication_service.repositories.CommunicationRepository;
+import com.cs301.communication_service.exceptions.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.*;
 
 @Service
 public class CommunicationServiceImpl implements CommunicationService {
@@ -23,9 +25,10 @@ public class CommunicationServiceImpl implements CommunicationService {
     
     @Override
     @Transactional(readOnly = true)
-    public CommunicationStatus getCommunicationStatus(String communicationId) {
+    public CommunicationStatus getCommunicationStatus(UUID communicationId) {
+        System.out.println(communicationId.toString());
         return communicationRepository.findById(communicationId)
             .map(Communication::getStatus)
-            .orElseThrow(() -> new RuntimeException("Communication not found"));
+            .orElseThrow(() -> new CommunicationNotFoundException(communicationId));
     }
 }

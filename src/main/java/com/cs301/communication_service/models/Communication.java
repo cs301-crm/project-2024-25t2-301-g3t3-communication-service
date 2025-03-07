@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 import lombok.*;
+import java.util.*;
 
 @Entity
 @Data
@@ -16,9 +17,9 @@ import lombok.*;
 public class Communication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(columnDefinition = "VARCHAR(36)")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "UUID DEFAULT gen_random_uuid()")
+    private UUID id;
 
     @NotBlank
     private String agentId;  // The agent performing the action
@@ -45,6 +46,6 @@ public class Communication {
     @Enumerated(EnumType.STRING)
     private CommunicationStatus status;  // SENT, FAILED, PENDING
 
-    @NotNull
-    private LocalDateTime timestamp;  // When the email was sent
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime timestamp = LocalDateTime.now();  // When the email was sent
 }

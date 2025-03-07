@@ -36,6 +36,9 @@ dependencies {
 
 	// AWS SDK
 	//implementation 'software.amazon.awssdk:ses:2.20.XX'
+
+	// env
+	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 	
 	// Database
 	runtimeOnly 'com.h2database:h2'

@@ -8,6 +8,7 @@ class CommunicationServiceApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// test
 	}
 
 }

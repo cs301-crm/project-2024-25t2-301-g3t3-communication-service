@@ -38,9 +38,9 @@ public class Communication {
     @NotBlank
     private String subject;  // Subject of the email
 
-    @NotBlank
-    @Lob
-    private String messageBody;  // Content of the email
+    // @NotBlank
+    // @Lob
+    // private String messageBody;  // Content of the email
 
     @NotNull
     @Enumerated(EnumType.STRING)

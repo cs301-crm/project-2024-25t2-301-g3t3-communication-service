@@ -38,8 +38,9 @@ public class CommunicationController {
     public ResponseEntity<CommunicationDTOResponse> createCommunication(@RequestBody @Valid CommunicationDTO communicationDTO) {
         logger.debug("Received create communication request");
         var communicationModel = communicationMapper.toModel(communicationDTO);
+        var crudinfo = communicationMapper.getCrudInfo(communicationDTO);
         logger.debug("Communication model mapped successfully");
-        var savedCommunication = communicationService.createCommunication(communicationModel);
+        var savedCommunication = communicationService.createCommunication(communicationModel, crudinfo);
         logger.debug("Communication created successfully");
         var response = communicationMapper.toDto(savedCommunication);
         logger.debug("Response mapped successfully");

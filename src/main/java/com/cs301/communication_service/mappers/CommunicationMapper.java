@@ -1,5 +1,6 @@
 package com.cs301.communication_service.mappers;
 
+import com.cs301.communication_service.models.CRUDInfo;
 import com.cs301.communication_service.models.Communication;
 import com.cs301.communication_service.dtos.CommunicationDTO;
 import com.cs301.communication_service.dtos.CommunicationDTOResponse;
@@ -29,7 +30,7 @@ public class CommunicationMapper {
                 .clientEmail(model.getClientEmail())
                 .crudType(model.getCrudType())
                 .subject(model.getSubject())
-                .messageBody(model.getMessageBody())
+                //.messageBody(model.getMessageBody())
                 .status(model.getStatus())
                 .timestamp(model.getTimestamp().format(DATE_FORMATTER))
                 .build();
@@ -49,11 +50,17 @@ public class CommunicationMapper {
         model.setClientEmail(dto.getClientEmail());
         model.setCrudType(dto.getCrudType());
         model.setSubject(dto.getSubject());
-        model.setMessageBody(dto.getMessageBody());
+        //model.setMessageBody(dto.getMessageBody());
         model.setStatus(dto.getStatus());
         // model.setTimestamp(LocalDateTime.parse(dto.getTimestamp(), DATE_FORMATTER));
 
         return model;
+    }
+
+    public CRUDInfo getCrudInfo(CommunicationDTO dto) {
+        if (dto == null) return null;
+
+        return dto.getCrudInfo();
     }
     
 }

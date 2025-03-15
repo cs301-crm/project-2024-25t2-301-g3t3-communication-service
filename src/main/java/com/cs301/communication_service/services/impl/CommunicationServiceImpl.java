@@ -1,7 +1,8 @@
 package com.cs301.communication_service.services.impl;
 
 import com.cs301.communication_service.services.*;
-import com.cs301.communication_service.constants.CommunicationStatus;
+import com.cs301.communication_service.constants.*;
+import com.cs301.communication_service.models.CRUDInfo;
 import com.cs301.communication_service.models.Communication;
 import com.cs301.communication_service.repositories.CommunicationRepository;
 import com.cs301.communication_service.exceptions.*;
@@ -22,23 +23,37 @@ public class CommunicationServiceImpl implements CommunicationService {
 
     @Override
     @Transactional
-    public Communication createCommunication(Communication communication) {
+    public Communication createCommunication(Communication communication, CRUDInfo crudInfo) {
         Communication savedCommunication = communicationRepository.save(communication);
 
         // Format email message
-        String emailBody = String.format(
-            "Dear Customer (%s),\n\n%s\n\nThis is an automated email. Please do not reply.\n\nThank you for banking with us.\n\nYours faithfully,\nScrooge Bank",
-            savedCommunication.getClientId(),
-            savedCommunication.getMessageBody()
-        );
+        // String emailBody = String.format(
+        //     "Dear Customer (%s),\n\n%s\n\nThis is an automated email. Please do not reply.\n\nThank you for banking with us.\n\nYours faithfully,\nScrooge Bank",
+        //     savedCommunication.getClientId(),
+        //     savedCommunication.getMessageBody()
+        // );
 
         // System.out.println(emailBody);
 
+        
+
         // Send email notification
-        emailService.sendEmail(
+        // emailService.sendEmail(
+        //     savedCommunication.getClientEmail(),
+        //     savedCommunication.getSubject(),
+        //     emailBody
+        // );
+
+        // Send HTML email notification
+        emailService.sendHTMLEmail(
+            savedCommunication.getAgentId(),
             savedCommunication.getClientEmail(),
-            savedCommunication.getSubject(),
-            emailBody
+            savedCommunication.getClientId(),
+            savedCommunication.getCrudType().toString(),
+            crudInfo.getAttribute(),
+            crudInfo.getBeforeValue(),
+            crudInfo.getAfterValue(),
+            crudInfo.getTimeStamp()
         );
 
         return savedCommunication;

@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.cs301.communication_service.constants.*;
 
-import jakarta.persistence.Lob;
+//import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,9 +37,9 @@ public class CommunicationDTOResponse {
     @NotBlank
     private String subject;  // Subject of the email
 
-    @NotBlank
-    @Lob
-    private String messageBody;  // Content of the email
+    // @NotBlank
+    // @Lob
+    // private String messageBody;  // Content of the email
 
     @NotNull
     private CommunicationStatus status;

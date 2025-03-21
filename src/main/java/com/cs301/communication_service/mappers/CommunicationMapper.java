@@ -3,9 +3,10 @@ package com.cs301.communication_service.mappers;
 
 import com.cs301.communication_service.protobuf.C2C;
 import com.cs301.communication_service.protobuf.Otp;
+import com.cs301.communication_service.protobuf.U2C;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import com.cs301.communication_service.models.CRUDInfo;
+
 import com.cs301.communication_service.models.*;
 import com.cs301.communication_service.constants.CRUDType;
 import com.cs301.communication_service.constants.CommunicationStatus;
@@ -64,14 +65,26 @@ public class CommunicationMapper {
         return model;
     }
 
-    public UserCommunication otpToModel(ConsumerRecord<String, Otp> record) {
+    public OtpCommunication otpToModel(ConsumerRecord<String, Otp> record) {
         Otp otpMessage = record.value();
 
+        OtpCommunication model = new OtpCommunication();
+        model.setEmail(otpMessage.getUserEmail());
+        model.setOtp(otpMessage.getOtp());
+        model.setSubject("Your OTP for Verification with Scrooge Bank");
+        model.setStatus(CommunicationStatus.SENT);
+        
+        return model;
+    }
+
+    public UserCommunication u2cToModel(ConsumerRecord<String, U2C> record) {
+        U2C u2cMessage = record.value();
+
         UserCommunication model = new UserCommunication();
-        model.setUserEmail(otpMessage.getUserEmail());
-        model.setUsername(otpMessage.getUsername());
-        model.setTempPassword(otpMessage.getTempPassword());
-        model.setUserRole(otpMessage.getUserRole());
+        model.setUserEmail(u2cMessage.getUserEmail());
+        model.setUsername(u2cMessage.getUsername());
+        model.setTempPassword(u2cMessage.getTempPassword());
+        model.setUserRole(u2cMessage.getUserRole());
         model.setSubject("Welcome Access to Scrooge Bank CRM System");
         model.setStatus(CommunicationStatus.SENT);
         

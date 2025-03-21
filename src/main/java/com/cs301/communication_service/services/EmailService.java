@@ -48,6 +48,11 @@ public class EmailService {
         return StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
     }
 
+    private String loadOtpEmailTemplate() throws IOException {
+        ClassPathResource resource = new ClassPathResource("templates/otp-user-email-template.html");
+        return StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
+    }
+
     public void sendEmail(String recipient, String subject, String messageBody) {
         // System.out.println(recipient);
         // System.out.println(subject);
@@ -130,6 +135,39 @@ public class EmailService {
             // Build AWS SES email request
             SendEmailRequest emailRequest = SendEmailRequest.builder()
                     .destination(Destination.builder().toAddresses(userEmail).build())
+                    .message(Message.builder()
+                            .subject(Content.builder().data(subject).build())
+                            .body(Body.builder().html(Content.builder().data(emailBody).build()).build()) // HTML Body
+                            .build())
+                    .source(senderEmail)
+                    .build();
+                    
+            try {
+                System.out.println("Attempting to send an HTML email through Amazon SES " + "using the AWS SDK for Java...");
+                sesClient.sendEmail(emailRequest);
+    
+            } catch (SesException e) {
+                System.out.println("error sending HTML email...");
+                System.err.println(e.awsErrorDetails().errorMessage());
+                //System.exit(1);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error loading email template" + e);
+        } catch (SesException e) {
+            System.out.println("AWS SES Error: {}" + e.awsErrorDetails().errorMessage());
+        }
+    }
+
+    public void sendOtpEmail(String email, int otp, String subject) {
+        try {
+            // Load HTML template
+            String emailBody = loadOtpEmailTemplate()
+                    .replace("{{otp}}", String.valueOf(otp));
+
+            // Build AWS SES email request
+            SendEmailRequest emailRequest = SendEmailRequest.builder()
+                    .destination(Destination.builder().toAddresses(email).build())
                     .message(Message.builder()
                             .subject(Content.builder().data(subject).build())
                             .body(Body.builder().html(Content.builder().data(emailBody).build()).build()) // HTML Body

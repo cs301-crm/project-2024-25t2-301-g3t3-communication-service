@@ -9,7 +9,7 @@ option java_package = "com.cs301.communication_service.protobuf";
 message Otp {
   
   // Unique identifier for the user whose account was created and enabled
-  string user_id = 1;
+  string username = 1;
 
   // User role - either ADMIN or AGENT
   string user_role = 2;

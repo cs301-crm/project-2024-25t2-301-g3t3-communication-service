@@ -1,4 +1,4 @@
 {
     "schemaType": "PROTOBUF",
-    "schema": "syntax = \"proto3\";\npackage com.cs301.communication_service;\n\noption java_multiple_files = true;\noption java_package = \"com.cs301.communication_service.protobuf\";\nmessage OTP {\n  string user_id = 1;\n  string user_role = 2;\n  string temp_password = 3;\n}"
+    "schema": "syntax = \"proto3\";\npackage com.cs301.communication_service;\n\noption java_multiple_files = true;\noption java_package = \"com.cs301.communication_service.protobuf\";\nmessage OTP {\n  string user_id = 1;\n  string user_role = 2;\n  string user_email = 3;\n  string temp_password = 4;\n}"
 }

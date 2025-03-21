@@ -4,8 +4,6 @@ package com.cs301.communication_service.mappers;
 import com.cs301.communication_service.protobuf.C2C;
 import com.cs301.communication_service.protobuf.Otp;
 
-import scala.remote;
-
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import com.cs301.communication_service.models.CRUDInfo;
 import com.cs301.communication_service.models.*;

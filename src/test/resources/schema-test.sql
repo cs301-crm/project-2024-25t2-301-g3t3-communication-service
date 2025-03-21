@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS client_communications;
 DROP TABLE IF EXISTS user_communications;
+DROP TABLE IF EXISTS otp_communications;
 
 CREATE TABLE IF NOT EXISTS client_communications (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -18,6 +19,15 @@ CREATE TABLE IF NOT EXISTS user_communications (
     user_role VARCHAR(255) NOT NULL,
     user_email VARCHAR(255) NOT NULL CHECK (user_email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
     temp_password VARCHAR(255) NOT NULL,
+    subject VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    timestamp TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS otp_communications (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    email VARCHAR(255) NOT NULL CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'),
+    otp INT NOT NULL,
     subject VARCHAR(255) NOT NULL,
     status VARCHAR(50) NOT NULL,
     timestamp TIMESTAMP NOT NULL

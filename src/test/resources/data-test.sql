@@ -23,3 +23,14 @@ INSERT INTO user_communications (
     'SENT'::VARCHAR,  
     NOW()
 );
+
+INSERT INTO otp_communications (
+    id, email, otp, subject, status, timestamp
+) VALUES (
+    gen_random_uuid(),
+    'agent@example.com', 
+    923474,  
+    'Welcome Email'::VARCHAR,  
+    'SENT'::VARCHAR,  
+    NOW()
+);

@@ -1,6 +1,6 @@
 package com.cs301.communication_service.consumer;
 
-import com.cs301.communication_service.protobuf.Otp;
+import com.cs301.communication_service.protobuf.U2C;
 import com.cs301.communication_service.services.impl.CommunicationServiceImpl;
 import com.cs301.communication_service.mappers.CommunicationMapper;
 import com.cs301.communication_service.models.UserCommunication;
@@ -21,14 +21,14 @@ public class UserConsumer {
     }
 
     @KafkaListener(
-        topics = "otp", 
+        topics = "notifications", 
         groupId = "communication-group", 
         containerFactory = "kafkaListenerContainerFactoryUser"
     )
-    public void consumeOtp(ConsumerRecord<String, Otp> record) {
-        System.out.println("received otp message!");
-        UserCommunication communication = communicationMapper.otpToModel(record);
-        System.out.println("converted otp message!");
+    public void consumeU2C(ConsumerRecord<String, U2C> record) {
+        System.out.println("received u2c message!");
+        UserCommunication communication = communicationMapper.u2cToModel(record);
+        System.out.println("converted u2c message!");
 
         // Now process the DTO (store in DB, send email, etc.)
         communicationService.createUserCommunication(communication);

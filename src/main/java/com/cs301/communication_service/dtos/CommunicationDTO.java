@@ -31,8 +31,8 @@ public class CommunicationDTO {
     @NotNull
     private CRUDType crudType;
 
-    @NotBlank
-    private String subject;  // Subject of the email
+    // @NotBlank
+    // private String subject;  // Subject of the email
 
     // @NotBlank
     // @Lob

@@ -39,7 +39,7 @@ public class CRUDInfo {
     }
 
     public String getTimeStamp() {     
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy '(SGT)'");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm '(SGT)'");
         return timestamp.atZone(ZoneId.of("Asia/Singapore")).format(formatter);
     }
     

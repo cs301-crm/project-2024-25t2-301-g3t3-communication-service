@@ -13,7 +13,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "communications")
+@Table(name = "client_communications")
 public class Communication {
 
     @Id
@@ -44,7 +44,7 @@ public class Communication {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private CommunicationStatus status;  // SENT, FAILED, PENDING
+    private CommunicationStatus status = CommunicationStatus.SENT;  // SENT, FAILED, PENDING
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime timestamp = LocalDateTime.now();  // When the email was sent

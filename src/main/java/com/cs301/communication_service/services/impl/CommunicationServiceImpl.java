@@ -3,8 +3,7 @@ package com.cs301.communication_service.services.impl;
 import com.cs301.communication_service.services.*;
 import com.cs301.communication_service.constants.*;
 import com.cs301.communication_service.models.*;
-import com.cs301.communication_service.repositories.CommunicationRepository;
-import com.cs301.communication_service.repositories.UserCommunicationRepository;
+import com.cs301.communication_service.repositories.*;
 import com.cs301.communication_service.exceptions.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,12 +15,14 @@ public class CommunicationServiceImpl implements CommunicationService {
     
     private final CommunicationRepository communicationRepository;
     private final UserCommunicationRepository userCommunicationRepository;
+    private final OtpCommunicationRepository otpCommunicationRepository;
     private final EmailService emailService;
 
-    public CommunicationServiceImpl(CommunicationRepository communicationRepository, EmailService emailService, UserCommunicationRepository userCommunicationRepository) {
+    public CommunicationServiceImpl(CommunicationRepository communicationRepository, EmailService emailService, UserCommunicationRepository userCommunicationRepository, OtpCommunicationRepository otpCommunicationRepository) {
         this.communicationRepository = communicationRepository;
         this.emailService = emailService;
         this.userCommunicationRepository = userCommunicationRepository;
+        this.otpCommunicationRepository = otpCommunicationRepository;
     }
 
     @Override
@@ -65,6 +66,21 @@ public class CommunicationServiceImpl implements CommunicationService {
             savedCommunication.getUserRole(),
             savedCommunication.getUserEmail(),
             savedCommunication.getTempPassword(),
+            savedCommunication.getSubject()
+        );
+
+        return savedCommunication;
+    }
+
+    @Override
+    @Transactional
+    public OtpCommunication createOtpCommunication(OtpCommunication communication) {
+        OtpCommunication savedCommunication = otpCommunicationRepository.save(communication);
+
+        // Send HTML email notification
+        emailService.sendOtpEmail(
+            savedCommunication.getEmail(),
+            savedCommunication.getOtp(),
             savedCommunication.getSubject()
         );
 

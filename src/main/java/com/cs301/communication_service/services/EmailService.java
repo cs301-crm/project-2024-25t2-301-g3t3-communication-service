@@ -3,7 +3,9 @@ package com.cs301.communication_service.services;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StreamUtils;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.io.IOException;
+import java.lang.StringBuilder;
 
 import com.cs301.communication_service.configs.AppConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,11 +36,11 @@ public class EmailService {
     }
 
     private String loadEmailTemplate(String crudType) throws IOException {
-        ClassPathResource resource = new ClassPathResource("templates/crud-email-template.html");
+        ClassPathResource resource = new ClassPathResource("templates/update-client-email-template.html");
         if (crudType.equals("CREATE")) {
-            resource = new ClassPathResource("templates/create-verify-email-template.html");
+            resource = new ClassPathResource("templates/create-client-email-template.html");
         } else if (crudType.equals("DELETE")) {
-            resource = new ClassPathResource("templates/delete-email-template.html");
+            resource = new ClassPathResource("templates/delete-client-email-template.html");
         }
         return StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
     }
@@ -53,47 +55,38 @@ public class EmailService {
         return StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
     }
 
-    public void sendEmail(String recipient, String subject, String messageBody) {
-        // System.out.println(recipient);
-        // System.out.println(subject);
-        // System.out.println(messageBody);
-        // System.out.println(senderEmail);
-        // System.out.println();
-        // Build email request
-        SendEmailRequest emailRequest = SendEmailRequest.builder()
-                .destination(Destination.builder().toAddresses(recipient).build())
-                .message(Message.builder()
-                        .subject(Content.builder().data(subject).build())
-                        .body(Body.builder().text(Content.builder().data(messageBody).build()).build())
-                        .build())
-                .source(senderEmail)
-                .build();
-
-        //sesClient.sendEmail(emailRequest);
-        try {
-            System.out.println("Attempting to send an email through Amazon SES " + "using the AWS SDK for Java...");
-            sesClient.sendEmail(emailRequest);
-
-        } catch (SesException e) {
-            System.out.println("error sending email...");
-            System.err.println(e.awsErrorDetails().errorMessage());
-            //System.exit(1);
-        }
-    }
-
     public void sendClientEmail(String agentId, String recipient, String clientId, String crudType, String subject, String attribute, String beforeValue, String afterValue, String timestamp) {
         try {
-            // Load HTML template
+            // Split crudInfo into list
+            List<String> attributes = Arrays.asList(attribute.split(","));
+            List<String> beforeValues = Arrays.asList(beforeValue.split(","));
+            List<String> afterValues = Arrays.asList(afterValue.split(","));
+
+            StringBuilder updateTableBody = new StringBuilder();
+            for (int i = 0; i < attributes.size(); i++) {
+                String attr = attributes.get(i).trim();
+                String before = i < beforeValues.size() ? beforeValues.get(i).trim() : "";
+                String after = i < afterValues.size() ? afterValues.get(i).trim() : "";
+
+                String tr = i % 2 == 0 ? "<tr style=\"background: #ffffff;\">":"<tr style=\"background: #f8f8f8;\">";
+                String td = "</tr>";
+
+                updateTableBody.append(tr);
+                updateTableBody.append(getTdString(attr, 20, true));
+                updateTableBody.append(getTdString(before, 40, false));
+                updateTableBody.append(getTdString(after, 40, false));
+                updateTableBody.append(td);
+            }
+
+            String updateBody = updateTableBody.toString();
+
+            // Load HTML template, replace below with the lists above
             String emailBody = loadEmailTemplate(crudType)
                     .replace("{{agent_id}}", agentId)
                     .replace("{{client_id}}", clientId)
                     .replace("{{crud_action}}", crudType)
-                    .replace("{{attribute}}", capitalise(attribute))
-                    .replace("{{before_value}}", beforeValue)
-                    .replace("{{after_value}}", afterValue)
-                    .replace("{{timestamp}}", timestamp); // Ensure correct placeholders
-
-            //System.out.println("Sending verification email to: {}" + recipient);
+                    .replace("{{update_body}}", updateBody)
+                    .replace("{{timestamp}}", timestamp); 
 
             // Build AWS SES email request
             SendEmailRequest emailRequest = SendEmailRequest.builder()
@@ -199,9 +192,9 @@ public class EmailService {
         return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
-    // public String getSubject(String crudType) {
-    //     if (crudType.equals("CREATE")) return "Verify Your New Account";
-    //     return "Account Activity Alert";
-    // }
+    public String getTdString(String value, int width, boolean bold) {
+        String str = bold ? "<td style=\"font-weight: bold; padding: 8px; width: "+width+"%\">"+value+"</td>":"<td style=\"padding: 8px; width: "+width+"%\">"+value+"</td>";
+        return str;
+    }
 }
 

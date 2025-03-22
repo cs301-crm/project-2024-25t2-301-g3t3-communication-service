@@ -11,19 +11,14 @@ import com.cs301.communication_service.models.*;
 import com.cs301.communication_service.constants.CRUDType;
 import com.cs301.communication_service.constants.CommunicationStatus;
 import com.cs301.communication_service.dtos.CommunicationDTO;
-import com.cs301.communication_service.dtos.CommunicationDTOResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-//import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Component
 public class CommunicationMapper {
     private static final Logger logger = LoggerFactory.getLogger(CommunicationMapper.class);
-
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     public OtpCommunication otpToModel(ConsumerRecord<String, Otp> record) {
         Otp otpMessage = record.value();

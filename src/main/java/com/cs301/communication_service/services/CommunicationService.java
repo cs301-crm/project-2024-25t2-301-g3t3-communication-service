@@ -10,4 +10,5 @@ public interface CommunicationService {
         CommunicationStatus getCommunicationStatus(UUID communicationId);
         UserCommunication createUserCommunication(UserCommunication communication);
         OtpCommunication createOtpCommunication(OtpCommunication communication);
+        AccountCommunication createAccountCommunication(AccountCommunication communication);
 }

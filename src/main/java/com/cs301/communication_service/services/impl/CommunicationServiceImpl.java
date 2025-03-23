@@ -15,14 +15,16 @@ public class CommunicationServiceImpl implements CommunicationService {
     
     private final CommunicationRepository communicationRepository;
     private final UserCommunicationRepository userCommunicationRepository;
-    private final OtpCommunicationRepository otpCommunicationRepository;
+    private final OtpCommunicationRepository otpCommunicationRepository;    
+    private final AccountCommunicationRepository accountCommunicationRepository;
     private final EmailService emailService;
 
-    public CommunicationServiceImpl(CommunicationRepository communicationRepository, EmailService emailService, UserCommunicationRepository userCommunicationRepository, OtpCommunicationRepository otpCommunicationRepository) {
+    public CommunicationServiceImpl(CommunicationRepository communicationRepository, EmailService emailService, UserCommunicationRepository userCommunicationRepository, OtpCommunicationRepository otpCommunicationRepository, AccountCommunicationRepository accountCommunicationRepository) {
         this.communicationRepository = communicationRepository;
         this.emailService = emailService;
         this.userCommunicationRepository = userCommunicationRepository;
         this.otpCommunicationRepository = otpCommunicationRepository;
+        this.accountCommunicationRepository = accountCommunicationRepository;
     }
 
     @Override
@@ -81,6 +83,25 @@ public class CommunicationServiceImpl implements CommunicationService {
         emailService.sendOtpEmail(
             savedCommunication.getEmail(),
             savedCommunication.getOtp(),
+            savedCommunication.getSubject()
+        );
+
+        return savedCommunication;
+    }
+
+    @Override
+    @Transactional
+    public AccountCommunication createAccountCommunication(AccountCommunication communication) {
+        AccountCommunication savedCommunication = accountCommunicationRepository.save(communication);
+
+        // Send HTML email notification
+        emailService.sendAccountEmail(
+            savedCommunication.getAgentId(),
+            savedCommunication.getClientEmail(),
+            savedCommunication.getClientId(),
+            savedCommunication.getCrudType().toString(),
+            savedCommunication.getAccountId(),
+            savedCommunication.getAccountType(),
             savedCommunication.getSubject()
         );
 

@@ -55,6 +55,14 @@ public class EmailService {
         return StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
     }
 
+    private String loadAccountEmailTemplate(String crudType) throws IOException {
+        ClassPathResource resource = new ClassPathResource("templates/create-account-email-template.html");
+        if (crudType.equals("DELETE")) {
+            resource = new ClassPathResource("templates/delete-account-email-template.html");
+        }
+        return StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
+    }
+
     public void sendClientEmail(String agentId, String recipient, String clientId, String crudType, String subject, String attribute, String beforeValue, String afterValue, String timestamp) {
         try {
             // Split crudInfo into list
@@ -161,6 +169,42 @@ public class EmailService {
             // Build AWS SES email request
             SendEmailRequest emailRequest = SendEmailRequest.builder()
                     .destination(Destination.builder().toAddresses(email).build())
+                    .message(Message.builder()
+                            .subject(Content.builder().data(subject).build())
+                            .body(Body.builder().html(Content.builder().data(emailBody).build()).build()) // HTML Body
+                            .build())
+                    .source(senderEmail)
+                    .build();
+                    
+            try {
+                System.out.println("Attempting to send an HTML email through Amazon SES " + "using the AWS SDK for Java...");
+                sesClient.sendEmail(emailRequest);
+    
+            } catch (SesException e) {
+                System.out.println("error sending HTML email...");
+                System.err.println(e.awsErrorDetails().errorMessage());
+                //System.exit(1);
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error loading email template" + e);
+        } catch (SesException e) {
+            System.out.println("AWS SES Error: {}" + e.awsErrorDetails().errorMessage());
+        }
+    }
+
+    public void sendAccountEmail(String agentId, String recipient, String clientId, String crudType, String accountId, String accountType, String subject) {
+        try {
+            // Load HTML template
+            String emailBody = loadAccountEmailTemplate(crudType)
+                    .replace("{{agent_id}}", agentId)
+                    .replace("{{client_id}}", clientId)
+                    .replace("{{account_id}}", accountId)
+                    .replace("{{account_type}}", accountType);
+
+            // Build AWS SES email request
+            SendEmailRequest emailRequest = SendEmailRequest.builder()
+                    .destination(Destination.builder().toAddresses(recipient).build())
                     .message(Message.builder()
                             .subject(Content.builder().data(subject).build())
                             .body(Body.builder().html(Content.builder().data(emailBody).build()).build()) // HTML Body

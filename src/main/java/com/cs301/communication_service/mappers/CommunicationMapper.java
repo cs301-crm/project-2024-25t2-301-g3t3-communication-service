@@ -1,6 +1,7 @@
 package com.cs301.communication_service.mappers;
 
 
+import com.cs301.communication_service.protobuf.A2C;
 import com.cs301.communication_service.protobuf.C2C;
 import com.cs301.communication_service.protobuf.Otp;
 import com.cs301.communication_service.protobuf.U2C;
@@ -19,6 +20,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommunicationMapper {
     private static final Logger logger = LoggerFactory.getLogger(CommunicationMapper.class);
+
+    public AccountCommunication a2cToModel(ConsumerRecord<String, A2C> record) {
+        A2C a2cMessage = record.value();
+
+        AccountCommunication model = new AccountCommunication();
+        model.setAgentId(a2cMessage.getAgentId());
+        model.setClientId(a2cMessage.getClientId());
+        model.setClientEmail(a2cMessage.getClientEmail());
+        model.setCrudType(mapCrudType(a2cMessage.getCrudType()));
+        model.setAccountId(a2cMessage.getAccountId());
+        model.setAccountType(a2cMessage.getAccountType());
+        model.setSubject(getAccountSubject(a2cMessage.getCrudType()));
+        model.setStatus(CommunicationStatus.SENT);
+        
+        return model;
+    }
 
     public OtpCommunication otpToModel(ConsumerRecord<String, Otp> record) {
         Otp otpMessage = record.value();
@@ -91,15 +108,25 @@ public class CommunicationMapper {
     public String getSubjectFromCrudType(CRUDType crudType) {
         switch (crudType) {
             case CREATE:
-                return "Verify Your New Account";
+                return "Verify Your New Profile";
             case UPDATE:
-                return "Account Activity Alert";
+                return "Profile Activity Alert";
             case DELETE:
-                return "Your Account Has Been Closed";
+                return "Your Profile Has Been Deleted";
             default:
-                return "Account Activity Alert";
+                return "Profile Activity Alert";
         }
             
+    }
+
+    public String getAccountSubject(String crudType) {
+        if (crudType.equals("CREATE")) {
+            return "Successfully Created Your Account"; 
+        } else if (crudType.equals("DELETE")) {
+            return "Successfully Closed Your Account";
+        } else {
+            return "Account Activity Alert";
+        }
     }
     
 }

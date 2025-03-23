@@ -11,6 +11,21 @@ INSERT INTO client_communications (
     NOW()
 );
 
+INSERT INTO account_communications (
+    id, agent_id, client_id, client_email, account_id, account_type, crud_type, subject, status, timestamp
+) VALUES (
+    gen_random_uuid(),
+    'agent_123', 
+    'client_456', 
+    'client@example.com',
+    'CLIENT456_STE110067',
+    'PERSONAL', 
+    'CREATE'::VARCHAR,  
+    'Welcome Email'::VARCHAR,  
+    'SENT'::VARCHAR,  
+    NOW()
+);
+
 INSERT INTO user_communications (
     id, username, user_role, user_email, temp_password, subject, status, timestamp
 ) VALUES (

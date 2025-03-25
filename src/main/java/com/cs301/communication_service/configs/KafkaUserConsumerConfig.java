@@ -47,6 +47,9 @@ public class KafkaUserConsumerConfig {
         // Set missing topics to non-fatal
         props.put("spring.kafka.listener.missing-topics-fatal", false);
 
+        // Set consumer to read from earliest message to maintain FIFO order
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+
         return new DefaultKafkaConsumerFactory<>(props);
     }
 

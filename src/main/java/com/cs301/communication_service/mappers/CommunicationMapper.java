@@ -6,12 +6,17 @@ import com.cs301.communication_service.protobuf.C2C;
 import com.cs301.communication_service.protobuf.Otp;
 import com.cs301.communication_service.protobuf.U2C;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import com.cs301.communication_service.models.*;
 import com.cs301.communication_service.constants.CRUDType;
 import com.cs301.communication_service.constants.CommunicationStatus;
 import com.cs301.communication_service.dtos.CommunicationDTO;
+import com.cs301.communication_service.dtos.RestCommunicationDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,6 +132,51 @@ public class CommunicationMapper {
         } else {
             return "Account Activity Alert";
         }
+    }
+
+    public RestCommunication communicationToRest(Communication communication) {
+        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus());
+    }
+
+    public RestCommunication userCommunicationToRest(UserCommunication communication) {
+        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus());
+    }
+
+    public RestCommunication accountCommunicationToRest(AccountCommunication communication) {
+        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus());
+    }
+
+    public RestCommunicationDTO restToDTO(RestCommunication comm) {
+        return RestCommunicationDTO.builder()
+            .subject(comm.getSubject())
+            .status(comm.geCommunicationStatus().toString()) // convert enum to string
+            .timestamp(timeToString(comm.getTimeStamp())) // format as needed
+            .build();
+    }
+
+    public String timeToString(LocalDateTime time) {          
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm '(SGT)'");
+        return time.atZone(ZoneId.of("Asia/Singapore")).format(formatter);
+    }
+
+    public List<RestCommunicationDTO> restToDTOList(List<RestCommunication> rcomms) {
+        List<RestCommunicationDTO> comms = new ArrayList<>();
+        for (RestCommunication c:rcomms) {
+            comms.add(restToDTO(c));
+        }
+        return comms;
+    }
+
+    public List<RestCommunicationDTO> getRestCommunicationDTOs(List<Communication> communications, List<AccountCommunication> accountCommunications) {
+        List<RestCommunication> comms = new ArrayList<>();
+        for (Communication c:communications) {
+            comms.add(communicationToRest(c));
+        }
+        for (AccountCommunication a:accountCommunications) {
+            comms.add(accountCommunicationToRest(a));
+        }
+        comms.sort(Comparator.comparing(RestCommunication::getTimeStamp).reversed());
+        return restToDTOList(comms); 
     }
     
 }

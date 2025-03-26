@@ -5,6 +5,8 @@ import com.cs301.communication_service.constants.*;
 import com.cs301.communication_service.models.*;
 import com.cs301.communication_service.repositories.*;
 import com.cs301.communication_service.exceptions.*;
+import com.cs301.communication_service.mappers.CommunicationMapper;
+import com.cs301.communication_service.dtos.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +19,16 @@ public class CommunicationServiceImpl implements CommunicationService {
     private final UserCommunicationRepository userCommunicationRepository;
     private final OtpCommunicationRepository otpCommunicationRepository;    
     private final AccountCommunicationRepository accountCommunicationRepository;
+    private final CommunicationMapper communicationMapper;
     private final EmailService emailService;
 
-    public CommunicationServiceImpl(CommunicationRepository communicationRepository, EmailService emailService, UserCommunicationRepository userCommunicationRepository, OtpCommunicationRepository otpCommunicationRepository, AccountCommunicationRepository accountCommunicationRepository) {
+    public CommunicationServiceImpl(CommunicationMapper communicationMapper, CommunicationRepository communicationRepository, EmailService emailService, UserCommunicationRepository userCommunicationRepository, OtpCommunicationRepository otpCommunicationRepository, AccountCommunicationRepository accountCommunicationRepository) {
         this.communicationRepository = communicationRepository;
         this.emailService = emailService;
         this.userCommunicationRepository = userCommunicationRepository;
         this.otpCommunicationRepository = otpCommunicationRepository;
         this.accountCommunicationRepository = accountCommunicationRepository;
+        this.communicationMapper = communicationMapper;
     }
 
     @Override
@@ -106,5 +110,13 @@ public class CommunicationServiceImpl implements CommunicationService {
         );
 
         return savedCommunication;
+    }
+
+    public List<RestCommunicationDTO> getRestCommunicationsDTOs(String userId) {
+
+        List<Communication> communications = communicationRepository.findByAgentId(userId);
+        List<AccountCommunication> accountCommunications = accountCommunicationRepository.findByAgentId(userId);
+
+        return communicationMapper.getRestCommunicationDTOs(communications, accountCommunications);
     }
 }

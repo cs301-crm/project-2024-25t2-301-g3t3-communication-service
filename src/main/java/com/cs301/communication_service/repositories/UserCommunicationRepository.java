@@ -14,5 +14,6 @@ public interface UserCommunicationRepository extends JpaRepository<UserCommunica
     // List<UserCommunication> findByUserEmail(String userEmail);
 
     List<UserCommunication> findByStatus(CommunicationStatus status);
+    List<UserCommunication> findByUsername(String username);
     
 }

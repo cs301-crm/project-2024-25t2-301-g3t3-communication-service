@@ -1,6 +1,5 @@
 package com.cs301.communication_service.consumer;
 
-// import com.cs301.communication_service.protobuf.A2C;
 import com.cs301.shared.protobuf.A2C;
 import com.cs301.communication_service.services.impl.CommunicationServiceImpl;
 import com.cs301.communication_service.mappers.CommunicationMapper;

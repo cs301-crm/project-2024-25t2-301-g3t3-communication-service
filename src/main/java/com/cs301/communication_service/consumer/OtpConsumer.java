@@ -1,6 +1,6 @@
 package com.cs301.communication_service.consumer;
 
-import com.cs301.communication_service.protobuf.Otp;
+import com.cs301.shared.protobuf.Otp;
 import com.cs301.communication_service.services.impl.CommunicationServiceImpl;
 import com.cs301.communication_service.mappers.CommunicationMapper;
 import com.cs301.communication_service.models.OtpCommunication;

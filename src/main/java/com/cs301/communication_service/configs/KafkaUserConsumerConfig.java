@@ -11,7 +11,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.beans.factory.annotation.Value;
 // import com.amazonaws.services.schemaregistry.serializers.protobuf.ProtobufSerializer;
-import com.cs301.communication_service.protobuf.U2C;
+import com.cs301.shared.protobuf.U2C;
 
 // import software.amazon.glue.schema.registry.serializers.GlueSchemaRegistryKafkaDeserializer;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer;

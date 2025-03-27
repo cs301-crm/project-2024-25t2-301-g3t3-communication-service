@@ -1,6 +1,5 @@
 package com.cs301.communication_service.consumer;
 
-// import com.cs301.communication_service.protobuf.C2C;
 import com.cs301.shared.protobuf.C2C;
 import com.cs301.communication_service.models.CRUDInfo;
 import com.cs301.communication_service.services.impl.CommunicationServiceImpl;

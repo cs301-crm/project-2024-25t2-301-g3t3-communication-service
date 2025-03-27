@@ -3,8 +3,8 @@ package com.cs301.communication_service.mappers;
 
 import com.cs301.shared.protobuf.A2C;
 import com.cs301.shared.protobuf.C2C;
-import com.cs301.communication_service.protobuf.Otp;
-import com.cs301.communication_service.protobuf.U2C;
+import com.cs301.shared.protobuf.Otp;
+import com.cs301.shared.protobuf.U2C;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;

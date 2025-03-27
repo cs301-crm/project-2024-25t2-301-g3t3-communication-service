@@ -11,7 +11,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.beans.factory.annotation.Value;
 // import com.amazonaws.services.schemaregistry.serializers.protobuf.ProtobufSerializer;
-import com.cs301.communication_service.protobuf.A2C;
+import com.cs301.shared.protobuf.A2C;
 
 // import software.amazon.glue.schema.registry.serializers.GlueSchemaRegistryKafkaDeserializer;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer;
@@ -42,6 +42,7 @@ public class KafkaAccountConsumerConfig {
 
         // Schema Registry URL configuration
         props.put("schema.registry.url", schemaRegistryUrl);
+        props.put("auto.register.schemas", false);
         props.put("specific.protobuf.value.type", A2C.class.getName());
         
         // Set missing topics to non-fatal

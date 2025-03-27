@@ -1,6 +1,7 @@
 package com.cs301.communication_service.consumer;
 
-import com.cs301.communication_service.protobuf.A2C;
+// import com.cs301.communication_service.protobuf.A2C;
+import com.cs301.shared.protobuf.A2C;
 import com.cs301.communication_service.services.impl.CommunicationServiceImpl;
 import com.cs301.communication_service.mappers.CommunicationMapper;
 import com.cs301.communication_service.models.AccountCommunication;
@@ -22,7 +23,7 @@ public class AccountConsumer {
 
     @KafkaListener(
         topics = "a2c", 
-        groupId = "communication-group", 
+        // groupId = "communication-group", 
         containerFactory = "kafkaListenerContainerFactoryAccount"
     )
     public void consumeA2C(ConsumerRecord<String, A2C> record) {

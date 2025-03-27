@@ -22,7 +22,7 @@ public class UserConsumer {
 
     @KafkaListener(
         topics = "notifications", 
-        groupId = "communication-group", 
+        // groupId = "communication-group", 
         containerFactory = "kafkaListenerContainerFactoryUser"
     )
     public void consumeU2C(ConsumerRecord<String, U2C> record) {

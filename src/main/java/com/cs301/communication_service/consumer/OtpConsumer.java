@@ -22,7 +22,7 @@ public class OtpConsumer {
 
     @KafkaListener(
         topics = "otps", 
-        groupId = "communication-group", 
+        // groupId = "communication-group", 
         containerFactory = "kafkaListenerContainerFactoryOtp"
     )
     public void consumeOtp(ConsumerRecord<String, Otp> record) {

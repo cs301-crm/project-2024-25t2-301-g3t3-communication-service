@@ -10,6 +10,7 @@ on:
 env:
   VERSION: latest
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  SES_SENDER_EMAIL: ${{ secrets.SES_SENDER_EMAIL }}
 
 jobs:
   build:

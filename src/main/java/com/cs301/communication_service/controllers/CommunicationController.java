@@ -3,7 +3,6 @@ package com.cs301.communication_service.controllers;
 import com.cs301.communication_service.services.impl.CommunicationServiceImpl;
 import com.cs301.communication_service.constants.CommunicationStatus;
 import com.cs301.communication_service.dtos.CommunicationStatusResponse;
-import com.cs301.communication_service.mappers.CommunicationMapper;
 import com.cs301.communication_service.dtos.*;
 
 import org.apache.http.HttpStatus;

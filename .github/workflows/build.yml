@@ -7,7 +7,7 @@ on:
     branches: [ "main"]
   workflow_dispatch:
 
-env:
+env :
   VERSION: latest
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   SES_SENDER_EMAIL: ${{ secrets.SES_SENDER_EMAIL }}

@@ -50,7 +50,7 @@ public class TestKafkaProducer {
         C2C message = C2C.newBuilder()
                 .setAgentId("532cefda21fc399f42bd")
                 .setClientId("12dae21y4c321ha21")
-                .setClientEmail("fqteo.2023@scis.smu.edu.sg")
+                .setClientEmail("fqteo@example.com")
                 .setCrudType("CREATE")
                 .setCrudInfo(crudInfo)
                 .build();
@@ -79,7 +79,7 @@ public class TestKafkaProducer {
         C2C message = C2C.newBuilder()
                 .setAgentId("system")
                 .setClientId("799ba132-2bd4-4257-b9fe-954cfd27dbfb")
-                .setClientEmail("jycheong.2023@scis.smu.edu.sg")
+                .setClientEmail("jycheong.2023@example.com")
                 .setCrudType("UPDATE")
                 .setCrudInfo(crudInfo)
                 .build();
@@ -93,7 +93,7 @@ public class TestKafkaProducer {
         // C2C message = C2C.newBuilder()
         //         .setAgentId("532cefda21fc399f42bd")
         //         .setClientId("12dae21y4c321ha21")
-        //         .setClientEmail("fqteo.2023@scis.smu.edu.sg")
+        //         .setClientEmail("fqteo.2023@example.com")
         //         .setCrudType("UPDATE")
         //         .setCrudInfo(crudInfo)
         //         .build();
@@ -122,7 +122,7 @@ public class TestKafkaProducer {
         C2C message = C2C.newBuilder()
                 .setAgentId("532cefda21fc399f42bd")
                 .setClientId("12dae21y4c321ha21")
-                .setClientEmail("fqteo.2023@scis.smu.edu.sg")
+                .setClientEmail("fqteo.2023@example.com")
                 .setCrudType("DELETE")
                 .setCrudInfo(crudInfo)
                 .build();
@@ -146,7 +146,7 @@ public class TestKafkaProducer {
         U2C message = U2C.newBuilder()
                 .setUsername("fred")
                 .setUserRole("AGENT")
-                .setUserEmail("fqteo.2023@scis.smu.edu.sg")
+                .setUserEmail("fqteo.2023@example.com")
                 .setTempPassword("1x28da74zf5bce93y3a8")
                 .build();
 
@@ -167,7 +167,7 @@ public class TestKafkaProducer {
         // Constructing Protobuf Message
 
         Otp message = Otp.newBuilder()
-                .setUserEmail("fqteo.2023@scis.smu.edu.sg")
+                .setUserEmail("fqteo.2023@example.com")
                 .setOtp(699718)
                 .build();
 
@@ -189,7 +189,7 @@ public class TestKafkaProducer {
         A2C message = A2C.newBuilder()
                 .setAgentId("532cefda21fc399f42bd")
                 .setClientId("12dae21y4c321ha21")
-                .setClientEmail("jycheong.2023@scis.smu.edu.sg")
+                .setClientEmail("jycheong.2023@example.com")
                 .setCrudType("CREATE")
                 .setAccountId("CLIENT40056_STE11783")
                 .setAccountType("PERSONAL")
@@ -213,7 +213,7 @@ public class TestKafkaProducer {
         A2C message = A2C.newBuilder()
                 .setAgentId("532cefda21fc399f42bd")
                 .setClientId("12dae21y4c321ha21")
-                .setClientEmail("jycheong.2023@scis.smu.edu.sg")
+                .setClientEmail("jycheong.2023@example.com")
                 .setCrudType("DELETE")
                 .setAccountId("CLIENT40056_STE11783")
                 .setAccountType("PERSONAL")

@@ -2,7 +2,6 @@ package com.cs301.communication_service.controllers;
 
 import com.cs301.communication_service.services.impl.CommunicationServiceImpl;
 import com.cs301.communication_service.constants.CommunicationStatus;
-import com.cs301.communication_service.dtos.CommunicationStatusResponse;
 import com.cs301.communication_service.dtos.*;
 
 import org.apache.http.HttpStatus;
@@ -31,11 +30,21 @@ public class CommunicationController {
         return ResponseEntity.ok(new CommunicationStatusResponse(status.name()));
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<RestCommunicationDTO>> getCommunicationsForAgent(@PathVariable String userId) {
-        List<RestCommunicationDTO> comms = communicationService.getRestCommunicationsDTOs(userId);
+    // /communications/{agentId}?searchQuery=&page=1&limit=10
+    @GetMapping("/{agentId}")
+    public ResponseEntity<List<RestCommunicationDTO>> getCommunicationsForAgent(
+            @PathVariable("agentId") String agentId,
+            @RequestParam(name = "searchQuery", required = false, defaultValue = "") String searchQuery,
+            @RequestParam(name = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(name = "limit", required = false, defaultValue = "10") int limit) {
+
+        // Pass these values to your service for further processing (e.g., search/filter, pagination)
+        // List<RestCommunicationDTO> comms = communicationService.getRestCommunicationsDTOs(agentId);
+        List<RestCommunicationDTO> comms = communicationService.getRestCommunicationsDTOs(agentId, searchQuery, page, limit);
+        // filter out necessary searchquery, page and limit based on comms
         return ResponseEntity.status(HttpStatus.SC_OK).body(comms);
     }
+
 
     
 }

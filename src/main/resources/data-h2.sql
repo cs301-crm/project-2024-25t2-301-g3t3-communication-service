@@ -6,7 +6,20 @@ INSERT INTO client_communications (
     'client_456', 
     'client@example.com', 
     'CREATE',  
-    'Welcome Email',  
+    'Welcome Email client 1',  
+    'SENT',  
+    CURRENT_TIMESTAMP
+);
+
+INSERT INTO client_communications (
+    id, agent_id, client_id, client_email, crud_type, subject, status, timestamp
+) VALUES (
+    random_uuid(),
+    'agent_122', 
+    'client_456', 
+    'client@example.com', 
+    'CREATE',  
+    'Welcome Email client 2',  
     'SENT',  
     CURRENT_TIMESTAMP
 );
@@ -21,7 +34,22 @@ INSERT INTO account_communications (
     'CLIENT456_STE110067',
     'PERSONAL', 
     'CREATE',  
-    'Welcome Email',  
+    'Welcome Email account 3',  
+    'SENT',  
+    CURRENT_TIMESTAMP
+);
+
+INSERT INTO account_communications (
+    id, agent_id, client_id, client_email, account_id, account_type, crud_type, subject, status, timestamp
+) VALUES (
+    random_uuid(),
+    'agent_122', 
+    'client_456', 
+    'client@example.com',
+    'CLIENT456_STE110067',
+    'PERSONAL', 
+    'CREATE',  
+    'Welcome Email account 4',  
     'SENT',  
     CURRENT_TIMESTAMP
 );

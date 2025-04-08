@@ -9,8 +9,13 @@ import com.cs301.communication_service.mappers.CommunicationMapper;
 import com.cs301.communication_service.dtos.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CommunicationServiceImpl implements CommunicationService {
@@ -118,5 +123,45 @@ public class CommunicationServiceImpl implements CommunicationService {
         List<AccountCommunication> accountCommunications = accountCommunicationRepository.findByAgentId(userId);
 
         return communicationMapper.getRestCommunicationDTOs(communications, accountCommunications);
+    }
+
+    public List<RestCommunicationDTO> getRestCommunicationsDTOs(String agentId, String searchQuery, int page, int limit) {
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.by("timestamp").descending());
+        
+        Page<Communication> commPage;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            commPage = communicationRepository.findByAgentIdAndSubjectContainingIgnoreCase(agentId, searchQuery, pageable);
+        } else {
+            commPage = communicationRepository.findByAgentId(agentId, pageable);
+        }
+        
+        // For AccountCommunication, repeat similar steps:
+        Page<AccountCommunication> accountCommPage;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            accountCommPage = accountCommunicationRepository.findByAgentIdAndSubjectContainingIgnoreCase(agentId, searchQuery, pageable);
+        } else {
+            accountCommPage = accountCommunicationRepository.findByAgentId(agentId, pageable);
+        }
+        
+        // Merge the lists, sort them, then apply pagination if needed
+        List<RestCommunication> mergedList = new ArrayList<>();
+        mergedList.addAll(commPage.getContent().stream()
+                                .map(communicationMapper::communicationToRest)
+                                .collect(Collectors.toList()));
+        mergedList.addAll(accountCommPage.getContent().stream()
+                                        .map(communicationMapper::accountCommunicationToRest)
+                                        .collect(Collectors.toList()));
+        
+        // Sort merged list (if not already sorted by each query)
+        mergedList.sort(Comparator.comparing(RestCommunication::getTimeStamp).reversed());
+        
+        // If the merged list size exceeds a page, you may need to create subList on mergedList.
+        int fromIndex = (page - 1) * limit;
+        int toIndex = Math.min(fromIndex + limit, mergedList.size());
+        List<RestCommunication> paginatedMerged = (fromIndex < mergedList.size())
+                ? mergedList.subList(fromIndex, toIndex)
+                : Collections.emptyList();
+        
+        return communicationMapper.restToDTOList(paginatedMerged);
     }
 }

@@ -11,6 +11,7 @@ env :
   VERSION: latest
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   SES_SENDER_EMAIL: ${{ secrets.SES_SENDER_EMAIL }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
   build:

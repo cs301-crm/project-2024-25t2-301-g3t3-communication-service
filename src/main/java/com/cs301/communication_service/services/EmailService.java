@@ -24,6 +24,9 @@ public class EmailService {
     @Value("${aws.ses.senderEmail}")
     private String senderEmail;
 
+    @Value("${email.base.domain}")
+    private String baseDomain;
+
     public EmailService(@Value("${aws.region}") String region, AppConfig appConfig) {
         // System.out.println(region);
         // System.out.println(Region.of(region));
@@ -127,6 +130,7 @@ public class EmailService {
         try {
             // Load HTML template
             String emailBody = loadUserEmailTemplate()
+                    .replace("{{base_domain}}", baseDomain)
                     .replace("{{username}}", userName)
                     .replace("{{user_role}}", capitalise(userRole))
                     .replace("{{temp_password}}", tempPassword);

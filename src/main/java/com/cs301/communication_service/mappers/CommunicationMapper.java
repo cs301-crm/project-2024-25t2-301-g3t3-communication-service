@@ -151,6 +151,8 @@ public class CommunicationMapper {
             .subject(comm.getSubject())
             .status(comm.geCommunicationStatus().toString()) // convert enum to string
             .timestamp(timeToString(comm.getTimeStamp())) // format as needed
+            .clientEmail(comm.getClientEmail())
+            .clientId(comm.getClientId())
             .build();
     }
 

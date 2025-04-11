@@ -22,4 +22,10 @@ public class RestCommunicationDTO {
 
     @NotNull
     private String timestamp;
+
+    @NotNull
+    private String clientId;
+
+    @NotNull
+    private String clientEmail;
 }

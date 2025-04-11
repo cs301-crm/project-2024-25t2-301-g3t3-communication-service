@@ -135,15 +135,15 @@ public class CommunicationMapper {
     }
 
     public RestCommunication communicationToRest(Communication communication) {
-        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus());
+        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus(), communication.getClientEmail(), communication.getClientId());
     }
 
     public RestCommunication userCommunicationToRest(UserCommunication communication) {
-        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus());
+        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus(), communication.getUserEmail(), communication.getUsername());
     }
 
     public RestCommunication accountCommunicationToRest(AccountCommunication communication) {
-        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus());
+        return new RestCommunication(communication.getSubject(), communication.getTimestamp(), communication.getStatus(), communication.getClientEmail(), communication.getClientId());
     }
 
     public RestCommunicationDTO restToDTO(RestCommunication comm) {

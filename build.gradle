@@ -63,12 +63,6 @@ dependencies {
 	implementation platform('software.amazon.awssdk:bom:2.30.31') // Use the latest version
     implementation 'software.amazon.awssdk:ses'
     implementation 'software.amazon.glue:schema-registry-serde:1.1.23'
-	// implementation platform('software.amazon.awssdk:bom:2.20.121') // Use the latest version
-    // implementation 'software.amazon.awssdk:ses' 
-    // // implementation'software.amazon.glue:schema-registry-deserializer-protobuf:1.1.23'
-	// implementation("software.amazon.glue:schema-registry-serde:1.1.23") {
-    //     exclude group: 'software.amazon.awssdk'
-    // }
 	implementation 'com.amazonaws:aws-java-sdk-lambda:1.12.782'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 

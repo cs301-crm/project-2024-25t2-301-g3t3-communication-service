@@ -1,5 +1,7 @@
 package com.cs301.communication_service.configs;
 
+import com.amazonaws.services.schemaregistry.deserializers.GlueSchemaRegistryKafkaDeserializer;
+import com.amazonaws.services.schemaregistry.utils.AWSSchemaRegistryConstants;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 // import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -15,6 +17,8 @@ import com.cs301.shared.protobuf.C2C;
 
 // import software.amazon.glue.schema.registry.serializers.GlueSchemaRegistryKafkaDeserializer;
 import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.glue.model.DataFormat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +31,10 @@ public class KafkaClientConsumerConfig {
 
     @Value("${kafka.schema.registry}")
     private String schemaRegistryUrl;
-    
+
+    @Value("${kafka.schema.protobuf.c2c}")
+    private String protobufC2CSchema;
+
     @Bean
     public ConsumerFactory<String, String> clientConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
@@ -38,10 +45,12 @@ public class KafkaClientConsumerConfig {
 
         // Deserializers
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaProtobufDeserializer.class.getName());
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, GlueSchemaRegistryKafkaDeserializer.class.getName());
+        props.put(AWSSchemaRegistryConstants.AWS_REGION, Region.AP_SOUTHEAST_1);
+        props.put(AWSSchemaRegistryConstants.DATA_FORMAT, DataFormat.PROTOBUF.name());
+        props.put(AWSSchemaRegistryConstants.REGISTRY_NAME, schemaRegistryUrl);
+        props.put(AWSSchemaRegistryConstants.SCHEMA_NAME, protobufC2CSchema);
 
-        // Schema Registry URL configuration
-        props.put("schema.registry.url", schemaRegistryUrl);
         props.put("specific.protobuf.value.type", C2C.class.getName());
         props.put("auto.register.schemas", false);
 

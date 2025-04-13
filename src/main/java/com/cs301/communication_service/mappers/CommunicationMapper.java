@@ -18,10 +18,13 @@ import com.cs301.communication_service.constants.CommunicationStatus;
 import com.cs301.communication_service.dtos.CommunicationDTO;
 import com.cs301.communication_service.dtos.RestCommunicationDTO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CommunicationMapper {
+    private static final Logger logger = LoggerFactory.getLogger(CommunicationMapper.class);
 
     public AccountCommunication a2cToModel(ConsumerRecord<String, A2C> record) {
         A2C a2cMessage = record.value();

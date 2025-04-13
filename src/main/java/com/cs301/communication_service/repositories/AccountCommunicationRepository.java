@@ -3,7 +3,6 @@ package com.cs301.communication_service.repositories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.cs301.communication_service.models.AccountCommunication;
-import com.cs301.communication_service.models.Communication;
 import com.cs301.communication_service.constants.CommunicationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.*;

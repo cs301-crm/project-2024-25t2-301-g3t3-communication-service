@@ -18,8 +18,8 @@ public class CommunicationServiceApplication implements CommandLineRunner {
 	@Override
     public void run(String... args) throws Exception {
         // Send a test message when the app starts
-		System.out.println("Sending Test Create Message...");
-        testKafkaProducer.sendTestCreateMessage();
+		// System.out.println("Sending Test Create Message...");
+        // testKafkaProducer.sendTestCreateMessage();
 		// System.out.println("Sending Test Update Message...");
         // testKafkaProducer.sendTestUpdateMessage();
 		// System.out.println("Sending Test Delete Message...");

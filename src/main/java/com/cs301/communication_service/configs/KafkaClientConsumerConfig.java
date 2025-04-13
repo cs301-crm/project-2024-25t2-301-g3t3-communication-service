@@ -3,7 +3,6 @@ package com.cs301.communication_service.configs;
 import com.amazonaws.services.schemaregistry.deserializers.GlueSchemaRegistryKafkaDeserializer;
 import com.amazonaws.services.schemaregistry.utils.AWSSchemaRegistryConstants;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-// import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +11,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.beans.factory.annotation.Value;
-// import com.amazonaws.services.schemaregistry.serializers.protobuf.ProtobufSerializer;
 import com.cs301.shared.protobuf.C2C;
-
-// import software.amazon.glue.schema.registry.serializers.GlueSchemaRegistryKafkaDeserializer;
-import io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.glue.model.DataFormat;
 
@@ -50,13 +45,6 @@ public class KafkaClientConsumerConfig {
         props.put(AWSSchemaRegistryConstants.DATA_FORMAT, DataFormat.PROTOBUF.name());
         props.put(AWSSchemaRegistryConstants.REGISTRY_NAME, schemaRegistryUrl);
         props.put(AWSSchemaRegistryConstants.SCHEMA_NAME, protobufC2CSchema);
-
-        props.put("specific.protobuf.value.type", C2C.class.getName());
-        props.put("auto.register.schemas", false);
-
-        
-        // Set missing topics to non-fatal
-        props.put("spring.kafka.listener.missing-topics-fatal", false);
 
         // Set consumer to read from earliest message to maintain FIFO order
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");

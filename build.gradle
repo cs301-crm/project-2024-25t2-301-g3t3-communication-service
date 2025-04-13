@@ -22,9 +22,6 @@ java {
 
 repositories {
 	mavenCentral()
-    maven {
-        url 'https://packages.confluent.io/maven'
-    }
 }
 
 protobuf {
@@ -53,7 +50,6 @@ dependencies {
 	//implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
     implementation 'org.springframework.kafka:spring-kafka'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    implementation 'io.confluent:kafka-protobuf-serializer:7.9.0'
     testImplementation 'org.springframework.kafka:spring-kafka-test'
 	
 	// Swagger

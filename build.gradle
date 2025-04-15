@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.3'
 	id 'io.spring.dependency-management' version '1.1.7'
-    id 'com.google.protobuf' version '0.9.4'
+	id 'com.google.protobuf' version '0.9.4'
 }
 
 group = 'com.cs301'
@@ -22,22 +22,25 @@ java {
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://packages.confluent.io/maven'
+	}
 }
 
 protobuf {
-    protoc {
-        artifact = 'com.google.protobuf:protoc:3.25.5'
-    }
+	protoc {
+		artifact = 'com.google.protobuf:protoc:3.25.5'
+	}
 }
 
 ext {
-    set('springCloudVersion', "2024.0.0")
+	set('springCloudVersion', "2024.0.0")
 }
 
 dependencies {
-    implementation 'org.mapstruct:mapstruct:1.6.3'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	implementation 'org.mapstruct:mapstruct:1.6.3'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
 	//Spring Boot starters
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -48,30 +51,31 @@ dependencies {
 
 	// Kafka
 	//implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
-    implementation 'org.springframework.kafka:spring-kafka'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
-	
+	implementation 'org.springframework.kafka:spring-kafka'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'io.confluent:kafka-protobuf-serializer:7.9.0'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
 	// AWS SDK
 	implementation platform('software.amazon.awssdk:bom:2.30.31') // Use the latest version
-    implementation 'software.amazon.awssdk:ses'
-    implementation 'software.amazon.glue:schema-registry-serde:1.1.23'
+	implementation 'software.amazon.awssdk:ses'
+	implementation 'software.amazon.glue:schema-registry-serde:1.1.23'
 	// implementation platform('software.amazon.awssdk:bom:2.20.121') // Use the latest version
-    // implementation 'software.amazon.awssdk:ses' 
-    // // implementation'software.amazon.glue:schema-registry-deserializer-protobuf:1.1.23'
+	// implementation 'software.amazon.awssdk:ses'
+	// // implementation'software.amazon.glue:schema-registry-deserializer-protobuf:1.1.23'
 	// implementation("software.amazon.glue:schema-registry-serde:1.1.23") {
-    //     exclude group: 'software.amazon.awssdk'
-    // }
+	//     exclude group: 'software.amazon.awssdk'
+	// }
 	implementation 'com.amazonaws:aws-java-sdk-lambda:1.12.782'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
 
 	// env
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
-	
+
 	// Database
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -89,7 +93,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	// Protobuf Java library (needed for generated code)
-    implementation 'com.google.protobuf:protobuf-java:3.25.5'
+	implementation 'com.google.protobuf:protobuf-java:3.25.5'
 }
 
 tasks.named('test') {
